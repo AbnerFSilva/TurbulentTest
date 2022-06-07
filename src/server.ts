@@ -7,3 +7,4 @@ di.app.listen(di.env.SERVER_PORT, () => {
 });
 
 di.app.use(routes);
+module.exports = di.app;
