@@ -1,7 +1,6 @@
 import { DotConfig } from "./Config";
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import { User } from "../../orm/entities/User";
 import { Message } from "../../orm/entities/Message";
 
 export const AppDataSource = (env: DotConfig) =>
@@ -14,7 +13,7 @@ export const AppDataSource = (env: DotConfig) =>
     database: env.TYPEORM_DATABASE,
     synchronize: true,
     logging: false,
-    entities: [User, Message],
+    entities: [Message],
     migrations: [],
     subscribers: [],
   });

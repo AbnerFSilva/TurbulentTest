@@ -28,8 +28,9 @@ class DependencyInjector {
     );
     this._app.use(cors());
     this._app.use(express.json());
-    this._databaseConn.initialize();
+
     this._databaseConn = AppDataSource(this._env);
+    this._databaseConn.initialize();
   }
 
   get app(): Application {
