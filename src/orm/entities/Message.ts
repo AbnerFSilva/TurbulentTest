@@ -11,9 +11,6 @@ export class Message {
   @Column({ nullable: false })
   date: Date;
 
-  @Column({ nullable: false })
-  email: string;
-
   @Column("timestamp with time zone", {
     nullable: false,
     default: () => "CURRENT_TIMESTAMP",
