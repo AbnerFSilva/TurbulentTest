@@ -5,8 +5,41 @@ import { Message } from "../orm/entities/Message";
 import { messageInput, messageResponse } from "./../model/message";
 
 export class MessageService {
+  async deleteMessageById(id: string) {
+    const message = await di.db.manager.delete(Message, id);
+    console.log(message);
+    if (message.affected == 0) {
+      const error: errorMessage = {
+        errorMessage: ErrorCode.NO_MESSAGE_FOUND,
+        date: new Date(),
+      };
+      return error;
+    }
+    return;
+  }
+  async getMessageById(id: string) {
+    const message = await di.db.manager.find(Message, { where: { id: id } });
+    if (message.length === 0) {
+      const error: errorMessage = {
+        errorMessage: ErrorCode.NO_MESSAGE_FOUND,
+        date: new Date(),
+      };
+      return error;
+    }
+    const messagesResponse: messageResponse = {
+      messages: message,
+    };
+    return messagesResponse;
+  }
   async getAllMessages() {
     const messages = await di.db.manager.find(Message);
+    if (messages.length === 0) {
+      const error: errorMessage = {
+        errorMessage: ErrorCode.NO_MESSAGES_FOUND,
+        date: new Date(),
+      };
+      return error;
+    }
     const messagesResponse: messageResponse = {
       messages: messages,
     };

@@ -25,4 +25,16 @@ router.get("/get_messages", async (req, res) => {
   res.json(messages);
 });
 
+router.get("/get_message/:id", async (req, res) => {
+  const messages = await di.messageService.getMessageById(req.params.id);
+  res.statusCode = HttpStatusCode.OK;
+  res.json(messages);
+});
+
+router.get("/delete_message/:id", async (req, res) => {
+  const messages = await di.messageService.deleteMessageById(req.params.id);
+  res.statusCode = HttpStatusCode.OK;
+  res.json(messages);
+});
+
 export { router as messageRoute };
