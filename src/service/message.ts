@@ -14,11 +14,15 @@ export class MessageService {
       };
       return error;
     }
+    //updates cache
+    this.getAllMessages();
     return;
   }
   async createMessage(message: messageInput) {
     try {
       await di.db.manager.insert(Message, message);
+      //updates cache
+      this.getAllMessages();
       return message;
     } catch (error) {
       const err = error as Error;
@@ -40,7 +44,11 @@ export class MessageService {
     return messagesResponse;
   }
   async getAllMessages() {
-    const messages = await di.db.manager.find(Message);
+    const messages = await di.db
+      .createQueryBuilder(Message, "message")
+      .cache(true)
+      .getMany();
+    //const messages = await di.db.manager.find(Message);
     if (messages.length === 0) {
       const error: errorMessage = {
         errorMessage: ErrorCode.NO_MESSAGES_FOUND,
@@ -51,6 +59,7 @@ export class MessageService {
     const messagesResponse: messageResponse = {
       messages: messages,
     };
+
     return messagesResponse;
   }
   validateMessage(message: messageInput) {
@@ -67,6 +76,14 @@ export class MessageService {
         date: new Date(),
       };
       return error;
+    }
+  }
+  async getMessagesByDate() {
+    const messages = await di.db.manager.find(Message, {
+      where: { date: new Date() },
+    });
+    if (messages.length < 1) {
+      //warn a brother!
     }
   }
 }

@@ -18,5 +18,6 @@ export const AppDataSource = (env: DotConfig) =>
     subscribers: [],
     cache: {
       duration: 60000,
+      tableName: "messages-cache",
     },
   });
