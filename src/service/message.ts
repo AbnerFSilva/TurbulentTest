@@ -7,7 +7,6 @@ import { messageInput, messageResponse } from "./../model/message";
 export class MessageService {
   async deleteMessageById(id: string) {
     const message = await di.db.manager.delete(Message, id);
-    console.log(message);
     if (message.affected == 0) {
       const error: errorMessage = {
         errorMessage: ErrorCode.NO_MESSAGE_FOUND,
