@@ -1,3 +1,4 @@
+import moment = require("moment");
 import di from "../di";
 import ErrorCode from "../enum/ErrorCodes";
 import { errorMessage } from "../model/error";
@@ -10,7 +11,7 @@ export class MessageService {
     if (message.affected == 0) {
       const error: errorMessage = {
         errorMessage: ErrorCode.NO_MESSAGE_FOUND,
-        date: new Date(),
+        date: moment().unix().toString(),
       };
       return error;
     }
@@ -20,6 +21,7 @@ export class MessageService {
   }
   async createMessage(message: messageInput) {
     try {
+      message.date = moment(message.date).unix().toString();
       await di.db.manager.insert(Message, message);
       //updates cache
       this.getAllMessages();
@@ -34,7 +36,7 @@ export class MessageService {
     if (message.length === 0) {
       const error: errorMessage = {
         errorMessage: ErrorCode.NO_MESSAGE_FOUND,
-        date: new Date(),
+        date: moment().unix().toString(),
       };
       return error;
     }
@@ -52,7 +54,7 @@ export class MessageService {
     if (messages.length === 0) {
       const error: errorMessage = {
         errorMessage: ErrorCode.NO_MESSAGES_FOUND,
-        date: new Date(),
+        date: moment().unix().toString(),
       };
       return error;
     }
@@ -66,24 +68,21 @@ export class MessageService {
     if (!message.message || !message.date) {
       const error: errorMessage = {
         errorMessage: ErrorCode.FIELDS_MISSING,
-        date: new Date(),
+        date: moment().unix().toString(),
       };
       return error;
     }
     if (new Date(message.date) < new Date()) {
       const error: errorMessage = {
         errorMessage: ErrorCode.DATE_OLDER_THAN_TODAY,
-        date: new Date(),
+        date: moment().unix().toString(),
       };
       return error;
     }
   }
   async getMessagesByDate() {
-    const messages = await di.db.manager.find(Message, {
-      where: { date: new Date() },
-    });
-    if (messages.length < 1) {
-      //warn a brother!
-    }
+    // return await di.db.manager.find(Message, {
+    //   where: { date: new Date() },
+    // });
   }
 }

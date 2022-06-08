@@ -1,3 +1,4 @@
+import { CronJob } from "cron";
 import { MessageService } from "./service/message";
 import { DataSource } from "typeorm";
 import { DotConfig } from "./util/config/Config";
@@ -17,6 +18,7 @@ class DependencyInjector {
   private _databaseConn: DataSource;
   private _axios = axios.default;
   private _messageService: MessageService;
+  private _cronJob: CronJob;
 
   constructor(env: DotConfig) {
     this._env = env;
@@ -56,6 +58,9 @@ class DependencyInjector {
 
   get messageService() {
     return this._messageService;
+  }
+  get CronJob() {
+    return this._cronJob;
   }
 }
 

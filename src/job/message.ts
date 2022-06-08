@@ -1,12 +1,12 @@
-import { Message } from "./../orm/entities/Message";
 import { CronJob } from "cron";
 import di from "../di";
 
-export const removeInactiveUsersRoutine = () => {
+export const notifyUsers = () => {
   return new CronJob(
     di.env.CRON_MESSAGE_JOB,
     async () => {
-      const messages = di.messageService.getMessagesByDate();
+      const messages = await di.messageService.getMessagesByDate();
+      console.log("messages are here");
     },
     null,
     true,

@@ -22,7 +22,7 @@ describe("POST methods", function () {
   it("Should post a new message", (done) => {
     const message: messageInput = {
       message: "This is a test message!",
-      date: new Date("2022-12-12 10:30:15"),
+      date: new Date("2022-12-12 10:30:00"),
     };
     chai
       .request(server)
@@ -45,7 +45,7 @@ describe("POST methods", function () {
   it("Should not post a new message without message field", (done) => {
     const message: messageInput = {
       message: null,
-      date: new Date("2022-12-12 10:30:15"),
+      date: new Date("2022-12-12 10:30:00"),
     };
     chai
       .request(server)
@@ -91,7 +91,7 @@ describe("POST methods", function () {
   it("Should not post a new message with old date field", (done) => {
     const message: messageInput = {
       message: "test message",
-      date: new Date("2021-12-12 10:30:15"),
+      date: new Date("2021-12-12 10:30:00"),
     };
     chai
       .request(server)

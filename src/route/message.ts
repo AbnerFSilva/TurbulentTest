@@ -1,4 +1,3 @@
-import { errorMessage } from "./../model/error";
 import { messageInput } from "./../model/message";
 import express = require("express");
 import di from "../di";
