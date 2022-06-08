@@ -7,6 +7,7 @@ import { AppDataSource } from "./util/config/data-source";
 import axios = require("axios");
 import cors = require("cors");
 import session = require("express-session");
+import bodyParser = require("body-parser");
 
 require("dotenv").config();
 
@@ -30,7 +31,7 @@ class DependencyInjector {
     );
     this._app.use(cors());
     this._app.use(express.json());
-
+    this._app.use(bodyParser.urlencoded({ extended: true }));
     this._databaseConn = AppDataSource(this._env);
     this._databaseConn.initialize();
 
