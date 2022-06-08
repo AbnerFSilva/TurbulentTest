@@ -2,25 +2,27 @@ import { errorMessage } from "./../model/error";
 import { messageInput } from "./../model/message";
 import express = require("express");
 import di from "../di";
-import ErrorCode from "../enum/ErrorCodes";
 import HttpStatusCode from "../enum/HttpStatusCode";
 const router = express.Router();
 
-router.post("/create_message", async (req, res, context) => {
-  console.log("controler");
-
+router.post("/create_message", async (req, res) => {
   const message: messageInput = req.body;
-  const response = await di.messageService.createMessage(message);
-  console.log("controler2");
+  const messageValidation = di.messageService.validateMessage(message);
 
-  if (!response.id) {
-    const error: errorMessage = {
-      errorMessage: ErrorCode.FIELDS_MISSING,
-      date: new Date(),
-    };
-    res.json(error).status(HttpStatusCode.BAD_REQUEST);
+  if (messageValidation) {
+    res.statusCode = HttpStatusCode.BAD_REQUEST;
+    res.send(messageValidation);
   }
-  res.json(response).status(HttpStatusCode.OK);
+
+  const response = await di.messageService.createMessage(message);
+  res.statusCode = HttpStatusCode.OK;
+  res.send(response);
+});
+
+router.get("/get_messages", async (req, res) => {
+  const messages = await di.messageService.getAllMessages();
+  res.statusCode = HttpStatusCode.OK;
+  res.json(messages);
 });
 
 export { router as messageRoute };
