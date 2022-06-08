@@ -9,15 +9,6 @@ chai.use(chaiHttp);
 const expect = chai.expect;
 
 describe("Post methods", function () {
-  //   it("Should get main route", async () => {
-  //     chai
-  //       .request(server)
-  //       .get("/abner")
-  //       .end(function (err, res) {
-  //         console.log(res);
-  //         expect(res).to.have.status(HttpStatusCode.OK);
-  //       });
-  //   });
   it("Should post a new message", (done) => {
     const message: messageInput = {
       message: "This is a test message!",
@@ -27,11 +18,13 @@ describe("Post methods", function () {
       .request(server)
       .post("/create_message")
       .send(message)
-      .end(function (error, response, body) {
+      .end(function (error: any, response: any, body: any) {
         if (error) {
           done(error);
         } else {
           expect(response).to.have.status(HttpStatusCode.OK);
+          expect(body).to.exist;
+          console.log(body);
           done();
         }
       });

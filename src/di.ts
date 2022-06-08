@@ -1,3 +1,4 @@
+import { MessageService } from "./service/message";
 import { DataSource } from "typeorm";
 import { DotConfig } from "./util/config/Config";
 import { Application } from "express";
@@ -14,6 +15,7 @@ class DependencyInjector {
   private readonly _env: DotConfig;
   private _databaseConn: DataSource;
   private _axios = axios.default;
+  private _messageService: MessageService;
 
   constructor(env: DotConfig) {
     this._env = env;
@@ -31,6 +33,8 @@ class DependencyInjector {
 
     this._databaseConn = AppDataSource(this._env);
     this._databaseConn.initialize();
+
+    this._messageService = new MessageService();
   }
 
   get app(): Application {
@@ -47,6 +51,10 @@ class DependencyInjector {
 
   get axios() {
     return this._axios;
+  }
+
+  get messageService() {
+    return this._messageService;
   }
 }
 
