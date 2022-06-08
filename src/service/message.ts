@@ -16,7 +16,7 @@ export class MessageService {
       return error;
     }
     //updates cache
-    this.getAllMessages();
+    //await this.getAllMessages();
     return;
   }
   async createMessage(message: messageInput) {
@@ -24,7 +24,7 @@ export class MessageService {
       message.date = moment(message.date).unix().toString();
       await di.db.manager.insert(Message, message);
       //updates cache
-      this.getAllMessages();
+      //await this.getAllMessages();
       return message;
     } catch (error) {
       const err = error as Error;
@@ -72,17 +72,19 @@ export class MessageService {
       };
       return error;
     }
-    if (new Date(message.date) < new Date()) {
-      const error: errorMessage = {
-        errorMessage: ErrorCode.DATE_OLDER_THAN_TODAY,
-        date: moment().unix().toString(),
-      };
-      return error;
-    }
+    //TODO fix date validation
+    // if (new Date(message.date) < new Date()) {
+    //   const error: errorMessage = {
+    //     errorMessage: ErrorCode.DATE_OLDER_THAN_TODAY,
+    //     date: moment().unix().toString(),
+    //   };
+    //   return error;
+    // }
   }
   async getMessagesByDate() {
-    // return await di.db.manager.find(Message, {
-    //   where: { date: new Date() },
-    // });
+    const date = moment().unix().toString();
+    return await di.db.manager.find(Message, {
+      where: { date: date },
+    });
   }
 }

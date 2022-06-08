@@ -6,7 +6,10 @@ export const notifyUsers = () => {
     di.env.CRON_MESSAGE_JOB,
     async () => {
       const messages = await di.messageService.getMessagesByDate();
-      console.log("messages are here");
+      if (messages.length > 0) {
+        console.log("messages are here");
+        console.log(messages);
+      }
     },
     null,
     true,

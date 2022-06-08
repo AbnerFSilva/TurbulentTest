@@ -8,7 +8,7 @@ export class Message {
   @Column({ nullable: false })
   message: string;
 
-  @Column({ nullable: false, type: "date" })
+  @Column({ nullable: false })
   date: string;
 
   @Column("timestamp with time zone", {
