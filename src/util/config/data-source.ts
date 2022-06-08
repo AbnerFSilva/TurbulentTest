@@ -16,4 +16,5 @@ export const AppDataSource = (env: DotConfig) =>
     entities: [Message],
     migrations: [],
     subscribers: [],
+    cache: true,
   });
