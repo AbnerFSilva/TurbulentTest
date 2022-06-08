@@ -16,6 +16,15 @@ export class MessageService {
     }
     return;
   }
+  async createMessage(message: messageInput) {
+    try {
+      await di.db.manager.insert(Message, message);
+      return message;
+    } catch (error) {
+      const err = error as Error;
+      throw new Error(`Fail message: ${err.message}`);
+    }
+  }
   async getMessageById(id: string) {
     const message = await di.db.manager.find(Message, { where: { id: id } });
     if (message.length === 0) {
@@ -58,15 +67,6 @@ export class MessageService {
         date: new Date(),
       };
       return error;
-    }
-  }
-  async createMessage(message: messageInput) {
-    try {
-      await di.db.manager.insert(Message, message);
-      return message;
-    } catch (error) {
-      const err = error as Error;
-      throw new Error(`Fail message: ${err.message}`);
     }
   }
 }
