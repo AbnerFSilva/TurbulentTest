@@ -31,7 +31,7 @@ router.get("/get_message/:id", async (req, res) => {
 });
 
 //TODO change to delete
-router.get("/delete_message/:id", async (req, res) => {
+router.delete("/delete_message/:id", async (req, res) => {
   const messages = await di.messageService.deleteMessageById(req.params.id);
   res.statusCode = HttpStatusCode.OK;
   res.json(messages);
