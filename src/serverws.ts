@@ -1,20 +1,22 @@
-import WebSocket = require("ws");
 import { notifyUsers } from "./job/message";
-let sockets: Array<any> = [];
+import WebSocket = require("ws");
+let clients: Array<any> = [];
 
 module.exports = (server: any) => {
-  const wss = new WebSocket.Server({
+  new WebSocket.Server({
     server,
   });
 
-  server.on("connection", function (socket: any) {
-    console.log(`connected user: ${socket}`);
-    sockets.push(socket);
-    socket.on("close", function () {
-      sockets = sockets.filter((s) => s !== socket);
+  server.on("connection", function connection(ws: WebSocket) {
+    console.log(`connected user`);
+    ws.emit("hello");
+    clients.push(ws);
+    ws.on("close", function () {
+      clients = clients.filter((s) => s !== ws);
       console.log("closed conn");
     });
   });
-  notifyUsers(sockets);
+
+  notifyUsers(clients);
   console.log("ws is listening!");
 };

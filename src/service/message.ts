@@ -4,14 +4,14 @@ import ErrorCode from "../enum/ErrorCodes";
 import { errorMessage } from "../model/error";
 import { Message } from "../orm/entities/Message";
 import { messageInput, messageResponse } from "./../model/message";
-
 export class MessageService {
-  async alertUsers(alerts: Message[], sockets: any[]) {
+  async alertUsers(alerts: Message[], clients: any) {
     if (alerts.length > 0) {
-      for (const alert of alerts)
-        sockets.map((socket) => {
-          socket.emit(alert);
-        });
+      for (const message of alerts) {
+        for (let client of clients) {
+          client.sendText(JSON.stringify(message));
+        }
+      }
     }
   }
   async deleteMessageById(id: string) {
@@ -27,7 +27,7 @@ export class MessageService {
   }
   async createMessage(message: messageInput) {
     try {
-      message.date = moment(message.date).format();
+      message.date = moment(message.date).format("YYYY-DD-MM HH:mm");
       await di.db.manager.insert(Message, message);
       return message;
     } catch (error) {
@@ -54,14 +54,7 @@ export class MessageService {
       .createQueryBuilder(Message, "message")
       .cache(true)
       .getMany();
-    //const messages = await di.db.manager.find(Message);
-    // if (messages.length === 0) {
-    //   const error: errorMessage = {
-    //     errorMessage: ErrorCode.NO_MESSAGES_FOUND,
-    //     date: moment().format(),
-    //   };
-    //   return error;
-    // }
+
     const messagesResponse: messageResponse = {
       messages: messages,
     };
@@ -76,14 +69,6 @@ export class MessageService {
       };
       return error;
     }
-    //TODO fix date validation
-    // if (new Date(message.date) < new Date()) {
-    //   const error: errorMessage = {
-    //     errorMessage: ErrorCode.DATE_OLDER_THAN_TODAY,
-    //     date: moment().format(),
-    //   };
-    //   return error;
-    // }
   }
   async getMessagesByDate() {
     const date = moment().format();

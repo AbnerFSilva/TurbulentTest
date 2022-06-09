@@ -11,7 +11,7 @@ export const AppDataSource = (env: DotConfig) =>
     username: env.DATABASE_USERNAME,
     password: env.DATABASE_PASSWORD,
     database: env.TYPEORM_DATABASE,
-    synchronize: false,
+    synchronize: true,
     logging: false,
     entities: [Message],
     migrations: [],

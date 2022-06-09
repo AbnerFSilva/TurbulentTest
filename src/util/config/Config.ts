@@ -12,6 +12,7 @@ export interface DotConfig {
   TYPEORM_DATABASE: string;
   TYPEORM_TEST_DATABASE: string;
   SERVER_PORT: number;
+  SERVER_SOCKET_PORT: number;
 
   //JOB
   CRON_MESSAGE_JOB: string;
