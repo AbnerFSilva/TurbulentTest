@@ -9,6 +9,7 @@ import axios = require("axios");
 import cors = require("cors");
 import session = require("express-session");
 import bodyParser = require("body-parser");
+import http = require("http");
 
 require("dotenv").config();
 
@@ -19,6 +20,7 @@ class DependencyInjector {
   private _axios = axios.default;
   private _messageService: MessageService;
   private _cronJob: CronJob;
+  private _server: any;
 
   constructor(env: DotConfig) {
     this._env = env;
@@ -36,6 +38,7 @@ class DependencyInjector {
     this._app.use(bodyParser.urlencoded({ extended: true }));
     this._databaseConn = AppDataSource(this._env);
     this._databaseConn.initialize();
+    this._server = http.createServer(this._app);
 
     this._messageService = new MessageService();
   }

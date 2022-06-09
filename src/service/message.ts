@@ -6,25 +6,29 @@ import { Message } from "../orm/entities/Message";
 import { messageInput, messageResponse } from "./../model/message";
 
 export class MessageService {
+  async alertUsers(alerts: Message[], sockets: any[]) {
+    if (alerts.length > 0) {
+      for (const alert of alerts)
+        sockets.map((socket) => {
+          socket.emit(alert);
+        });
+    }
+  }
   async deleteMessageById(id: string) {
     const message = await di.db.manager.delete(Message, id);
     if (message.affected == 0) {
       const error: errorMessage = {
         errorMessage: ErrorCode.NO_MESSAGE_FOUND,
-        date: moment().unix().toString(),
+        date: moment().format(),
       };
       return error;
     }
-    //updates cache
-    //await this.getAllMessages();
     return;
   }
   async createMessage(message: messageInput) {
     try {
-      message.date = moment(message.date).unix().toString();
+      message.date = moment(message.date).format();
       await di.db.manager.insert(Message, message);
-      //updates cache
-      //await this.getAllMessages();
       return message;
     } catch (error) {
       const err = error as Error;
@@ -36,7 +40,7 @@ export class MessageService {
     if (message.length === 0) {
       const error: errorMessage = {
         errorMessage: ErrorCode.NO_MESSAGE_FOUND,
-        date: moment().unix().toString(),
+        date: moment().format(),
       };
       return error;
     }
@@ -51,13 +55,13 @@ export class MessageService {
       .cache(true)
       .getMany();
     //const messages = await di.db.manager.find(Message);
-    if (messages.length === 0) {
-      const error: errorMessage = {
-        errorMessage: ErrorCode.NO_MESSAGES_FOUND,
-        date: moment().unix().toString(),
-      };
-      return error;
-    }
+    // if (messages.length === 0) {
+    //   const error: errorMessage = {
+    //     errorMessage: ErrorCode.NO_MESSAGES_FOUND,
+    //     date: moment().format(),
+    //   };
+    //   return error;
+    // }
     const messagesResponse: messageResponse = {
       messages: messages,
     };
@@ -68,7 +72,7 @@ export class MessageService {
     if (!message.message || !message.date) {
       const error: errorMessage = {
         errorMessage: ErrorCode.FIELDS_MISSING,
-        date: moment().unix().toString(),
+        date: moment().format(),
       };
       return error;
     }
@@ -76,13 +80,13 @@ export class MessageService {
     // if (new Date(message.date) < new Date()) {
     //   const error: errorMessage = {
     //     errorMessage: ErrorCode.DATE_OLDER_THAN_TODAY,
-    //     date: moment().unix().toString(),
+    //     date: moment().format(),
     //   };
     //   return error;
     // }
   }
   async getMessagesByDate() {
-    const date = moment().unix().toString();
+    const date = moment().format();
     return await di.db.manager.find(Message, {
       where: { date: date },
     });
