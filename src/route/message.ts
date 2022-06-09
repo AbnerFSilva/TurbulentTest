@@ -30,7 +30,6 @@ router.get("/get_message/:id", async (req, res) => {
   res.json(messages);
 });
 
-//TODO change to delete
 router.delete("/delete_message/:id", async (req, res) => {
   const messages = await di.messageService.deleteMessageById(req.params.id);
   res.statusCode = HttpStatusCode.OK;
