@@ -70,10 +70,4 @@ export class MessageService {
       return error;
     }
   }
-  async getMessagesByDate() {
-    const date = moment().format();
-    return await di.db.manager.find(Message, {
-      where: { date: date },
-    });
-  }
 }

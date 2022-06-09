@@ -7,7 +7,7 @@ export const notifyUsers = (clients: any) => {
     di.env.CRON_MESSAGE_JOB,
     async () => {
       const data = await di.messageService.getAllMessages();
-      const date = moment().format("YYYY/DD/MM HH:mm");
+      const date = moment().format("YYYY-DD-MM HH:mm");
 
       const alert = data.messages.filter((msg) => {
         return msg.date === date;

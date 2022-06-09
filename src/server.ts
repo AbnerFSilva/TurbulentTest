@@ -20,7 +20,7 @@ const serverWS = ws
       clients.splice(clients.indexOf(conn), 1);
     });
   })
-  .listen(8082);
+  .listen(di.env.SERVER_SOCKET_PORT);
 console.log(
   `web socket server is listening! port:${di.env.SERVER_SOCKET_PORT}`
 );

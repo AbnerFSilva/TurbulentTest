@@ -21,7 +21,7 @@ export class inital1654621862970 implements MigrationInterface {
             },
             {
               name: "date",
-              type: "timestamp",
+              type: "character varying",
             },
             {
               name: "createdAt",
