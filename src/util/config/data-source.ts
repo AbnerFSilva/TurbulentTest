@@ -17,7 +17,7 @@ export const AppDataSource = (env: DotConfig) =>
     migrations: [],
     subscribers: [],
     cache: {
-      duration: 60000,
+      duration: 10000,
       tableName: "messages-cache",
     },
   });
