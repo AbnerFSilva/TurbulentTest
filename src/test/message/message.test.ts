@@ -131,7 +131,7 @@ describe("GET methods", function () {
     await di.messageService.createMessage(message);
     chai
       .request(server)
-      .get(`/delete_message/${message.id}`)
+      .delete(`/delete_message/${message.id}`)
       .end((error: any, response: any) => {
         expect(response).to.have.property("status").to.be.eq(HttpStatusCode.OK);
       });
